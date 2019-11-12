@@ -15,5 +15,5 @@ import requests
 requests.post("http://127.0.0.1:5000/todo", 
               json={"Title":"Titulo da todo", 
                     "Description":"Descrição da todo"
-                    "DueDate Date('2019-12-01')"}
+                    "DueDate Date('2019-12-01')"})
 ```
