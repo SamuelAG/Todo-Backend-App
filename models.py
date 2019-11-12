@@ -13,7 +13,6 @@ class Schema:
           Title TEXT,
           Description TEXT,
           _is_done boolean,
-          _is_deleted boolean,
           CreatedOn Date DEFAULT CURRENT_DATE,
           DueDate Date
         );
@@ -40,4 +39,28 @@ class TodoModel:
                 f'"{params.get("DueDate")}")'
         result = self.conn.execute(query)
         return result
+    
+    def getTodos(self):
+        query = "select * from Todo"
+        result_set = self.conn.execute(query).fetchall()
+        keys = {
+            "Id": 1,
+            "Title" : "title",
+            "Description" : "description",
+            "DueDate" : "date"
+        }.keys()
+
+        result = [{column: row[i]
+                  for i, column in enumerate(keys)}
+                  for row in result_set]
+        print(result)
+        return result
+
+    def delete(self, id):
+        print("Id: ", id)
+        query = "delete from Todo where id = "
+        query += str(id)
+        result = self.conn.execute(query)
+        return result
+        
         

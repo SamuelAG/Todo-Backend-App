@@ -6,3 +6,9 @@ class TodoService:
 
     def create(self, params):
         self.model.create(params)
+    
+    def delete(self, params):
+        self.model.delete(params)
+
+    def getTodos(self):
+        return self.model.getTodos()
