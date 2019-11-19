@@ -10,5 +10,8 @@ class TodoService:
     def delete(self, params):
         self.model.delete(params)
 
+    def update(self, params):
+        self.model.updateTodo(params)
+
     def getTodos(self):
         return self.model.getTodos()

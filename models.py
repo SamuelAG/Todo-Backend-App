@@ -12,7 +12,7 @@ class Schema:
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           Title TEXT,
           Description TEXT,
-          _is_done boolean,
+          _is_done boolean DEFAULT 0,
           CreatedOn Date DEFAULT CURRENT_DATE,
           DueDate Date
         );
@@ -40,6 +40,23 @@ class TodoModel:
         result = self.conn.execute(query)
         return result
     
+    def delete(self, id):
+        query = "delete from Todo where id = "
+        query += str(id)
+        result = self.conn.execute(query)
+        return result
+
+    def updateTodo(self, id):
+        getId = "select _is_done from Todo where id = "
+        getId += str(id)
+        isDone = self.conn.execute(getId).fetchall()[0][0]
+        query = "update Todo set _is_done = {} where id = {}"
+        if isDone == 1: isDone = 0 
+        else: isDone = 1 
+        query = query.format(isDone, id)
+        #   print(query)
+        self.conn.execute(query)
+
     def getTodos(self):
         query = "select * from Todo"
         result_set = self.conn.execute(query).fetchall()
@@ -47,20 +64,13 @@ class TodoModel:
             "Id": 1,
             "Title" : "title",
             "Description" : "description",
-            "DueDate" : "date"
+            "_is_done" : False,
+            "CreatedOn" : "data",
+            "DueDate" : "date",
         }.keys()
 
         result = [{column: row[i]
                   for i, column in enumerate(keys)}
                   for row in result_set]
-        print(result)
-        return result
-
-    def delete(self, id):
-        print("Id: ", id)
-        query = "delete from Todo where id = "
-        query += str(id)
-        result = self.conn.execute(query)
-        return result
-        
-        
+        #print(result)
+        return result      
